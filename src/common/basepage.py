@@ -11,6 +11,8 @@ JS_SEND_KEYS = 'js_send_keys'
 DOUBLE_CLICK = 'double_click'
 CONTEXT_CLICK = 'context_click'
 MOVE_TO = 'move_to'
+FIND = 'find'
+FINDS = 'finds'
 
 
 class BasePage:
@@ -47,7 +49,7 @@ class BasePage:
 
         return method, selector
 
-    def find(self, selector_text):
+    def _find(self, selector_text):
         """
         查找单个元素
         :param selector_text:
@@ -57,7 +59,7 @@ class BasePage:
         ele = self.driver.find_element(method, selector)
         return ele
 
-    def finds(self, selector_text):
+    def _finds(self, selector_text):
         """
         查找一组元素
         :param selector_text:
@@ -115,7 +117,7 @@ class BasePage:
         self.driver.switch_to.alert.dismiss()
 
     # 执行js语句
-    def js(self, js_):
+    def _js(self, js_):
         self.driver.execute_script(js_)
 
     # 页面截图
@@ -124,7 +126,7 @@ class BasePage:
 
     # 右键动作
     def _context_click(self, selector):
-        ActionChains(self.driver).context_click(self.find(selector)).perform()
+        ActionChains(self.driver).context_click(self._find(selector)).perform()
 
     # 拖动动作
     def _drop_to_point(self, selector, point):
@@ -132,20 +134,20 @@ class BasePage:
 
     # 双击动作
     def _double_click(self, selector):
-        ActionChains(self.driver).double_click(self.find(selector)).perform()
+        ActionChains(self.driver).double_click(self._find(selector)).perform()
 
     # 移动至动作
     def _move_to(self, selector):
-        ActionChains(self.driver).move_to_element(self.find(selector)).perform()
+        ActionChains(self.driver).move_to_element(self._find(selector)).perform()
 
     # 统一动作--点击
     def _click(self, selector):
-        ele = self.find(selector)
+        ele = self._find(selector)
         ele.click()
 
     # 统一动作--输入值
     def _send_keys(self, selector, value):
-        ele = self.find(selector)
+        ele = self._find(selector)
         ele.send_keys(value)
 
     # 统一动作--js点击
@@ -157,7 +159,7 @@ class BasePage:
             js_ = f"document.querySelector('{selector_text}').click();"
         else:
             print('定位方式有误！只能使用xpath或者css')
-        self.js(js_)
+        self._js(js_)
 
     # 统一动作--js输入值
     def _js_send_keys(self, selector, value):
@@ -174,11 +176,17 @@ class BasePage:
             js_ = f"document.querySelector('{selector_text}').innerText() = '{value}';"
         else:
             print('定位方式有误！只能使用xpath或者css')
-        self.js(js_)
+        self._js(js_)
 
     # 统一动作装饰器函数
+    """
+    该装饰器提供了统一的元素交互方式，普通点击与输入，JS的点击与输入，没有关键字则返回原函数内容
+    """
     def action(func):
-        def deal(self, action_, value=None):
+        def deal(self, action_=None, value=None):
+            if action_ is None:
+                return func(self)
+
             if action_ == 'click':
                 self._click(func(self))
             elif action_ == 'send_keys':
@@ -193,6 +201,10 @@ class BasePage:
                 self._context_click(func(self))
             elif action_ == 'move_to':
                 self._move_to(func(self))
+            elif action_ == 'find':
+                self._find(func(self))
+            elif action_ == 'finds':
+                self._finds(func(self))
             else:
                 print('动作暂不支持！期待新版吧。')
 
