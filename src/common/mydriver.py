@@ -21,7 +21,7 @@ class MyDriver:
             self.mode = mode
         self.wait_time = wait_time
 
-    def open_browser(self, driver_path=None):
+    def chrome_browser(self, driver_path=None):
         """
         打开浏览器
         :param driver_path: 浏览器驱动路径
