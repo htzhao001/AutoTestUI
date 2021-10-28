@@ -5,7 +5,7 @@ import time
 
 urls = {
     '': '没有起始URL，请检查',
-    'home_page': 'xxxx',
+    'home_page': 'http://www.baidu.com/',
     'first_page': 'xxxx',
 }
 
