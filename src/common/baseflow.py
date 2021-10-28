@@ -27,8 +27,12 @@ class BaseFlow:
     end_page = ''
 
     # 初始化驱动和起始url
-    def __init__(self, driver):
+    def __init__(self, driver, para=None):
         self.driver = driver
+        if para is not None:
+            self.para = para
+        else:
+            self.para = Para()
         self.start_urls = urls[self.start_page]
 
     # 流程执行函数
