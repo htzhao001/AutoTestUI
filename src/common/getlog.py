@@ -12,13 +12,13 @@ class MyLog:
         self.log = logging.getLogger()
         self.log.setLevel(logging.DEBUG)
         # 日志格式：可以根据需要调整(文件名-函数名)
-        log_str = logging.Formatter('%(levelname):%(filename)s - %(funcName)s - %(lineno)d - %(asctime)s : %(message)s')
+        log_str = logging.Formatter('%(levelname)s: %(filename)s - %(funcName)s - %(lineno)d - %(asctime)s : %(message)s')
 
         stream_handle = logging.StreamHandler()
         stream_handle.setLevel(logging.INFO)
         stream_handle.setFormatter(log_str)
 
-        file_handle = logging.FileHandler(file_name)
+        file_handle = logging.FileHandler(file_name, encoding='utf-8')
         file_handle.setLevel(logging.DEBUG)
         file_handle.setFormatter(log_str)
 
