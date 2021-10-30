@@ -1,6 +1,7 @@
 # 作者： 迷路的小怪兽
 # 创建时间： 2021/10/20 21:41
 import time
+from src.common.getlog import MyLog
 
 
 urls = {
@@ -27,15 +28,26 @@ class BaseFlow:
     end_page = ''
 
     # 初始化驱动和起始url
-    def __init__(self, driver, para=None):
+    def __init__(self, name, driver, para=None):
+        self.flow_name = name
         self.driver = driver
         if para is not None:
             self.para = para
         else:
             self.para = Para()
         self.start_urls = urls[self.start_page]
+        self.log = MyLog()
 
-    # 流程执行函数
+    # 流程的装饰器，用于日志记录流程开始与结束
+    def flow_log(func):
+        def log_(self):
+            self.log.info(f"流程：'{self.flow_name}' 开始执行！")
+            func(self)
+            self.log.info(f"流程：'{self.flow_name}' 执行结束！")
+
+        return log_
+
+    # 流程执行函数,子类的此函数必须使用flow_log装饰
     def execute(self):
         pass
 
@@ -70,3 +82,5 @@ class BaseFlow:
             self._homepage_to_start_page()
 
         return self
+
+
