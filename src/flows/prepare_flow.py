@@ -9,6 +9,7 @@ class PrepareFlow(BaseFlow):
 
     start_page = 'home_page'
 
+    @BaseFlow.flow_log
     def execute(self):
         page = BaiduPage(self.driver)
         page.get(self.start_urls)

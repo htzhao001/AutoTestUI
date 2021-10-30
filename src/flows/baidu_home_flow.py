@@ -9,6 +9,7 @@ class SearchFlow(BaseFlow):
 
     start_page = 'home_page'
 
+    @BaseFlow.flow_log
     def execute(self):
         home_page = BaiduPage(self.driver)
         home_page.baidu_search_input(SEND_KEYS, self.para.keywords)
