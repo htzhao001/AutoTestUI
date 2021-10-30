@@ -1,8 +1,8 @@
 # 作者： 迷路的小怪兽
 # 创建时间： 2021/10/20 21:40
 from selenium import webdriver
-import time
 import os
+from src.common.getlog import MyLog
 
 
 class MyDriver:
@@ -20,6 +20,7 @@ class MyDriver:
         if mode is not None:
             self.mode = mode
         self.wait_time = wait_time
+        self.log = MyLog()
 
     def chrome_browser(self, driver_path=None):
         """
@@ -45,4 +46,5 @@ class MyDriver:
         driver.implicitly_wait(self.wait_time)
         driver.maximize_window()
 
+        self.log.info('谷歌浏览器已打开！')
         return driver
