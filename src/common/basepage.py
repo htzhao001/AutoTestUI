@@ -68,7 +68,6 @@ class BasePage:
         except Exception as msg:
             self.log.warning(f'查找元素失败！请检查页面是否正常加载或等待时间是否合适。信息：{msg}')
 
-
     def _finds(self, selector_text):
         """
         查找一组元素
@@ -136,7 +135,6 @@ class BasePage:
         except Exception as msg:
             self.log.error(f"跳转警告弹窗失败，信息：{msg}")
 
-
     # 接受警告窗口
     def alert_accept(self):
         self.driver.switch_to.alert.accept()
@@ -168,7 +166,6 @@ class BasePage:
             self.log.info(f"已成功右键点击元素：{ele.text}。")
         except Exception as msg:
             self.log.error(f"右键点击元素 '{ele.text}' 失败！报错信息为：{msg}")
-
 
     # 拖动动作
     def _drop_to_point(self, selector, point):
